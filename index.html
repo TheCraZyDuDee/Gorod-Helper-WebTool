@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gorod Helper Tool</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            float: left;
+            width: 45%;
+            padding: 10px;
+        }
+        .locationButton, select, #getSettings {
+            display: block;
+            width: 90%;
+            height: 40px;
+            margin: 5px 0;
+        }
+        #reset {
+            display: block;
+            width: 70px;
+            height: 30px;
+            margin: 5px 0;
+        }
+        #resultText {
+            width: 90%;
+            height: 120px;
+            margin: 5px 0;
+            resize: none;
+        }
+    </style>
+    <script>
+        // Initialize counter
+        var counter = 0;
+
+        // Define the combinations
+var combinations = {
+    "Armory,Tank Factory": {"Armory": 3, "Dept. Store(3rd Floor)": 2, "Infirmary": 3, "Dragon Command": 1, "Supply Depot": 3, "Tank Factory": "Cylinder Location"},
+    "Armory,Dept. Store": {"Armory": 1, "Supply Depot": 3, "Tank": 1, "Infirmary": 1, "Dragon Command": 2, "Dept. Store": "Cylinder Location"},
+    "Armory,Dragon Command": {"Armory": 3, "Dept. Store": 2, "Infirmary": 2, "Tank Factory": 2, "Supply Depot": 1, "Dragon Command": "Cylinder Location"},
+    "Armory,Supply Depot": {"Armory": 2, "Tank Factory": 1, "Infirmary": 1, "Dept. Store": 3, "Dragon Command": 1, "Supply Depot": "Cylinder Location"},
+    "Armory,Infirmary": {"Armory": 2, "Tank Factory": 2, "Supply Depot": 1, "Dragon Command": 2, "Dept. Store": 2, "Infirmary": "Cylinder Location"},
+    "Dept. Store,Armory": {"Dept. Store": 3, "Dragon Command": 3, "Infirmary": 2, "Tank Factory": 2, "Supply": 2, "Armory": "Cylinder Location"},
+    "Dept. Store,Dragon Command": {"Dept. Store": 2, "Infirmary": 2, "Tank Factory": 3, "Armory": 1, "Supply Depot": 1, "Dragon Command": "Cylinder Location"},
+    "Dept. Store,Supply Depot": {"Dept. Store": 1, "Armory": 2, "Tank Factory": 1, "Infirmary": 3, "Dragon Command": 3, "Supply Depot": "Cylinder Location"},
+    "Dept. Store,Infirmary": {"Dept. Store": 1, "Armory": 2, "Tank Factory": 2, "Supply Depot": 1, "Dragon Command": 3, "Infirmary": "Cylinder Location"},
+    "Dept. Store,Tank Factory": {"Dept. Store": 2, "Infirmary": 3, "Dragon Command": 1, "Supply Depot": 2, "Armory": 2, "Tank Factory": "Cylinder Location"},
+    "Dragon Command,Supply Depot": {"Dragon Command": 2, "Dept. Store": 2, "Infirmary": 2, "Tank Factory": 3, "Armory": 1, "Supply Depot": "Cylinder Location"},
+    "Dragon Command,Infirmary": {"Dragon Command": 1, "Supply Depot": 3, "Tank Factory": 3, "Armory": 3, "Dept. Store": 2, "Infirmary": "Cylinder Location"},
+    "Dragon Command,Tank Factory": {"Dragon Command": 3, "Infirmary": 1, "Dept. Store": 1, "Armory": 1, "Supply Depot": 3, "Tank Factory": "Cylinder Location"},
+    "Dragon Command,Dept. Store": {"Dragon Command": 1, "Supply Depot": 2, "Armory": 2, "Tank Factory": 1, "Infirmary": 1, "Dept. Store": "Cylinder Location"},
+    "Dragon Command,Armory": {"Dragon Command": 1, "Supply Depot": 3, "Tank Factory": 1, "Infirmary": 1, "Dept. Store": 1, "Armory": "Cylinder Location"},
+    "Supply Depot,Infirmary": {"Supply Depot": 3, "Tank Factory": 3, "Armory": 3, "Dept. Store": 3, "Dragon Command": 3, "Infirmary": "Cylinder Location"},
+    "Supply Depot,Tank Factory": {"Supply Dept": 2, "Armory": 3, "Dept. Store": 3, "Dragon Command": 3, "Infirmary": 2, "Tank Factory": "Cylinder Location"},
+    "Supply Depot,Dragon Command": {"Supply Depot": 3, "Tank Factory": 3, "Armory": 3, "Dept. Store": 2, "Infirmary": 3, "Dragon Command": "Cylinder Location"},
+    "Supply Depot,Dept. Store": {"Supply Depot": 2, "Armory": 2, "Tank Factory": 1, "Infirmary": 3, "Dragon Command": 2, "Dept. Store": "Cylinder Location"},
+    "Supply Depot,Armory": {"Supply Depot": 3, "Tank Factory": 1, "Infirmary": 3, "Dragon Command": 2, "Dept. Store": 1, "Armory": "Cylinder Location"},
+    "Infirmary,Tank Factory": {"Infirmary": 3, "Dragon Command": 2, "Dept. Store": 1, "Armory": 1, "Supply Depot": 3, "Tank Factory": "Cylinder Location"},
+    "Infirmary,Supply Depot": {"Infirmary": 3, "Dragon Command": 2, "Dept. Store": 1, "Armory": 2, "Tank Factory": 2, "Supply Depot": "Cylinder Location"},
+    "Infirmary,Dragon Command": {"Infirmary": 2, "Tank Factory": 2, "Supply Depot": 2, "Armory": 2, "Dept. Store": 3, "Dragon Command": "Cylinder Location"},
+    "Infirmary,Dept. Store": {"Infirmary": 3, "Dragon Command": 1, "Supply Depot": 3, "Tank Factory": 3, "Armory": 3, "Dept. Store": "Cylinder Location"},
+    "Infirmary,Armory": {"Infirmary": 2, "Tank Factory": 2, "Supply Depot": 1, "Dragon Command": 2, "Dept. Store": 1, "Armory": "Cylinder Location"},
+    "Tank Factory,Infirmary": {"Tank Factory": 2, "Supply Depot": 2, "Armory": 2, "Dept. Store": 3, "Dragon Command": 3, "Infirmary": "Cylinder Location"},
+    "Tank Factory,Supply Depot": {"Tank Factory": 1, "Infirmary": 3, "Dragon Command": 2, "Dept. Store": 1, "Armory": 1, "Supply Depot": "Cylinder Location"},
+    "Tank Factory,Dragon Command": {"Tank Factory": 1, "Infirmary": 1, "Dept. Store": 1, "Armory": 1, "Supply Depot": 1, "Dragon Command": "Cylinder Location"},
+    "Tank Factory,Dept. Store": {"Tank Factory": 1, "Infirmary": 3, "Dragon Command": 1, "Supply Depot": 2, "Armory": 3, "Dept. Store": "Cylinder Location"},
+    "Tank Factory,Armory": {"Tank Factory": 1, "Infirmary": 1, "Dept. Store": 3, "Dragon Command": 1, "Supply Depot": 2, "Armory": "Cylinder Location"}
+};
+
+        function getSettings() {
+            // Get the start and end points from the dropdown menus
+            var startPoint = document.getElementById('startPoint').value;
+            var endPoint = document.getElementById('endPoint').value;
+
+            // Get the correct settings for the valves
+            var settings = combinations[startPoint + ',' + endPoint];
+
+            if (settings) {
+                var result = "The settings for the valves are:\n";
+                for (var location in settings) {
+                    result += location + ": " + settings[location] + "\n";
+                }
+            } else {
+                var result = "Invalid start or end point.";
+            }
+
+            // Display the result in the text area
+            document.getElementById('resultText').value = result;
+        }
+
+        function reset() {
+            // Reset the counter
+            counter = 0;
+
+            // Reset the text of the buttons and enable them
+            var buttons = document.getElementsByClassName('locationButton');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].innerText = buttons[i].id;
+                buttons[i].disabled = false;
+            }
+
+            // Clear the text area
+            document.getElementById('resultText').value = '';
+        }
+
+        function updateButton(button) {
+            // Update the counter
+            counter++;
+
+            // Update the text of the button and disable it
+            button.innerText = button.id + " (" + counter + ")";
+            button.disabled = true;
+
+            // If all buttons have been clicked, disable them
+            if (counter == 6) {
+                var buttons = document.getElementsByClassName('locationButton');
+                for (var i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Gorod Helper Tool</h1>
+
+    <div class="container">
+        <div class="column">
+            <button id="Tank Factory" class="locationButton" onclick="updateButton(this)">Tank Factory</button>
+            <button id="Dragon Command" class="locationButton" onclick="updateButton(this)">Dragon Command</button>
+            <button id="Infirmary" class="locationButton" onclick="updateButton(this)">Infirmary</button>
+            <button id="Armory" class="locationButton" onclick="updateButton(this)">Armory</button>
+            <button id="Supply Depot" class="locationButton" onclick="updateButton(this)">Supply Depot</button>
+            <button id="Dept. Store" class="locationButton" onclick="updateButton(this)">Dept. Store</button>
+            <button id="reset" onclick="reset()">Reset</button>
+        </div>
+
+        <div class="column">
+            <label for="startPoint">Start Point:</label>
+            <select id="startPoint">
+            <option value="Armory">Armory</option>
+            <option value="Dept. Store">Dept. Store</option>
+            <option value="Dragon Command">Dragon Command</option>
+            <option value="Supply Depot">Supply Depot</option>
+            <option value="Infirmary">Infirmary</option>
+            <option value="Tank Factory">Tank Factory</option>
+            </select>
+
+            <label for="endPoint">End Point:</label>
+            <select id="endPoint">
+            <option value="Armory">Armory</option>
+            <option value="Dept. Store">Dept. Store</option>
+            <option value="Dragon Command">Dragon Command</option>
+            <option value="Supply Depot">Supply Depot</option>
+            <option value="Infirmary">Infirmary</option>
+            <option value="Tank Factory">Tank Factory</option>
+            </select>
+
+            <button id="getSettings" onclick="getSettings()">Get Settings</button>
+
+            <textarea id="resultText" readonly></textarea>
+        </div>
+    </div>
+</body>
+</html>
