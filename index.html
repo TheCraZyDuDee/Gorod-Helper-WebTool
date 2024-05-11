@@ -7,36 +7,126 @@
             display: flex;
             justify-content: space-between;
         }
-        .column {
-            float: left;
-            width: 45%;
-            padding: 10px;
-        }
-        .locationButton, select, #getSettings {
+        .Button1 {
             display: block;
-            width: 90%;
-            height: 40px;
-            margin: 5px 0;
+            width: 300px;
+            height: 25px;
+            overflow: auto;
+	    top: 150px;
+	    left: 250px;
+	    position: absolute;
+        }
+        .Button2 {
+            display: block;
+            width: 300px;
+            height: 25px;
+	    top: 182px;
+	    left: 250px;
+	    position: absolute;
+        }
+        .Button3 {
+            display: block;
+            width: 300px;
+            height: 25px;
+	    top: 217px;
+	    left: 250px;
+	    position: absolute;
+        }
+        .Button4 {
+            display: block;
+            width: 300px;
+            height: 25px;
+	    top: 253px;
+	    left: 250px;
+	    position: absolute;
+        }
+        .Button5 {
+            display: block;
+            width: 300px;
+            height: 25px;
+	    top: 288px;
+	    left: 250px;
+	    position: absolute;
+        }
+        .Button6 {
+            display: block;
+            width: 300px;
+            height: 25px;
+	    top: 323px;
+	    left: 250px;
+	    position: absolute;
         }
         #reset {
             display: block;
             width: 70px;
-            height: 30px;
-            margin: 5px 0;
+            height: 25px;
+	    top: 380px;
+	    left: 250px;
+	    position: absolute;
+        }
+        #getSettings {
+            display: block;
+            width: 100px;
+            height: 25px;
+	    top: 184px;
+	    left: 575px;
+	    position: absolute;
+        }
+        .startpoint {
+            width: 180px;
+            height: 23px;
+	    top: 150px;
+	    left: 575px;
+	    position: absolute;
+        }
+        .endpoint {
+            width: 180px;
+            height: 23px;
+	    top: 150px;
+	    left: 773px;
+	    position: absolute;
         }
         #resultText {
-            width: 90%;
-            height: 120px;
-            margin: 5px 0;
+            width: 370px;
+            height: 182px;
+	    top: 220px;
+	    left: 575px;
+	    position: absolute;
             resize: none;
         }
+	.Header {
+    	    position: absolute;
+    	    top: 50px;
+    	    left: 250px;
+	}
+	.Text1 {
+    	    position: absolute;
+    	    bottom: 5px;
+    	    right: 5px;
+	}
+	.Text2 {
+    	    position: absolute;
+    	    bottom: 5px;
+    	    left: 5px;
+	}
+	.Text3 {
+    	    position: absolute;
+    	    top: 110px;
+    	    left: 250px;
+	}
+	.Text4 {
+    	    position: absolute;
+    	    top: 110px;
+    	    left: 575px;
+	}
+
     </style>
     <script>
         // Initialize counter
         var counter = 0;
 
         // Define the combinations
-var combinations = {
+        var combinations = {
     "Armory,Tank Factory": {"Armory": 3, "Dept. Store(3rd Floor)": 2, "Infirmary": 3, "Dragon Command": 1, "Supply Depot": 3, "Tank Factory": "Cylinder Location"},
     "Armory,Dept. Store": {"Armory": 1, "Supply Depot": 3, "Tank": 1, "Infirmary": 1, "Dragon Command": 2, "Dept. Store": "Cylinder Location"},
     "Armory,Dragon Command": {"Armory": 3, "Dept. Store": 2, "Infirmary": 2, "Tank Factory": 2, "Supply Depot": 1, "Dragon Command": "Cylinder Location"},
@@ -67,7 +157,7 @@ var combinations = {
     "Tank Factory,Dragon Command": {"Tank Factory": 1, "Infirmary": 1, "Dept. Store": 1, "Armory": 1, "Supply Depot": 1, "Dragon Command": "Cylinder Location"},
     "Tank Factory,Dept. Store": {"Tank Factory": 1, "Infirmary": 3, "Dragon Command": 1, "Supply Depot": 2, "Armory": 3, "Dept. Store": "Cylinder Location"},
     "Tank Factory,Armory": {"Tank Factory": 1, "Infirmary": 1, "Dept. Store": 3, "Dragon Command": 1, "Supply Depot": 2, "Armory": "Cylinder Location"}
-};
+        };
 
         function getSettings() {
             // Get the start and end points from the dropdown menus
@@ -95,7 +185,7 @@ var combinations = {
             counter = 0;
 
             // Reset the text of the buttons and enable them
-            var buttons = document.getElementsByClassName('locationButton');
+            var buttons = document.querySelectorAll('.Button1, .Button2, .Button3, .Button4, .Button5, .Button6');
             for (var i = 0; i < buttons.length; i++) {
                 buttons[i].innerText = buttons[i].id;
                 buttons[i].disabled = false;
@@ -115,7 +205,7 @@ var combinations = {
 
             // If all buttons have been clicked, disable them
             if (counter == 6) {
-                var buttons = document.getElementsByClassName('locationButton');
+                var buttons = document.querySelectorAll('.Button1, .Button2, .Button3, .Button4, .Button5, .Button6');
                 for (var i = 0; i < buttons.length; i++) {
                     buttons[i].disabled = true;
                 }
@@ -124,22 +214,20 @@ var combinations = {
     </script>
 </head>
 <body>
-    <h1>Gorod Helper Tool</h1>
 
     <div class="container">
         <div class="column">
-            <button id="Tank Factory" class="locationButton" onclick="updateButton(this)">Tank Factory</button>
-            <button id="Dragon Command" class="locationButton" onclick="updateButton(this)">Dragon Command</button>
-            <button id="Infirmary" class="locationButton" onclick="updateButton(this)">Infirmary</button>
-            <button id="Armory" class="locationButton" onclick="updateButton(this)">Armory</button>
-            <button id="Supply Depot" class="locationButton" onclick="updateButton(this)">Supply Depot</button>
-            <button id="Dept. Store" class="locationButton" onclick="updateButton(this)">Dept. Store</button>
+            <button id="Tank Factory" class="Button1" onclick="updateButton(this)">Tank Factory</button>
+            <button id="Dragon Command" class="Button2" onclick="updateButton(this)">Dragon Command</button>
+            <button id="Infirmary" class="Button3" onclick="updateButton(this)">Infirmary</button>
+            <button id="Armory" class="Button4" onclick="updateButton(this)">Armory</button>
+            <button id="Supply Depot" class="Button5" onclick="updateButton(this)">Supply Depot</button>
+            <button id="Dept. Store" class="Button6" onclick="updateButton(this)">Dept. Store</button>
             <button id="reset" onclick="reset()">Reset</button>
         </div>
 
         <div class="column">
-            <label for="startPoint">Start Point:</label>
-            <select id="startPoint">
+            <select id="startPoint" class="startpoint">
             <option value="Armory">Armory</option>
             <option value="Dept. Store">Dept. Store</option>
             <option value="Dragon Command">Dragon Command</option>
@@ -148,8 +236,7 @@ var combinations = {
             <option value="Tank Factory">Tank Factory</option>
             </select>
 
-            <label for="endPoint">End Point:</label>
-            <select id="endPoint">
+            <select id="endPoint" class="endpoint">
             <option value="Armory">Armory</option>
             <option value="Dept. Store">Dept. Store</option>
             <option value="Dragon Command">Dragon Command</option>
@@ -158,10 +245,17 @@ var combinations = {
             <option value="Tank Factory">Tank Factory</option>
             </select>
 
-            <button id="getSettings" onclick="getSettings()">Get Settings</button>
+            <button id="getSettings" class="getSettingsButton" onclick="getSettings()">Get Settings</button>
 
             <textarea id="resultText" readonly></textarea>
         </div>
+    </div>
+    <div>
+	<div class="Header">Gorod Helper WebTool</div>
+	<div class="Text1">v0.0.2</div>
+	<div class="Text2">CraZyDuDe - 2024</div>
+	<div class="Text3">Select Locations in order to remember them</div>
+	<div class="Text4">Select the appropriate Valves in the Dropdown Menus below</div>
     </div>
 </body>
 </html>
