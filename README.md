@@ -1,5 +1,7 @@
 # Gorod Helper Webtool
 
+## Due to the tool being AI-generated and my current focus on learning coding, I'll no longer be maintaining or providing support for this tool.
+
 __https://thecrazydudee.github.io/Gorod-Helper-WebTool__
 
 Webversion of my [Gorod Helper Tool](https://github.com/TheCraZyDuDee/BO3-Gorod-Krovi-Helper) (still very wip)
