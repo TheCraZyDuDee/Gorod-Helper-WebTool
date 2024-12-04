@@ -1,6 +1,6 @@
 # Gorod Helper Webtool
 
-## Due to the tool being AI-generated and my current focus on learning coding, I'll no longer be maintaining or providing support for this tool.
+## Due to the tool being AI-generated and my current focus on learning coding, support for this is limited for now.
 
 __https://thecrazydudee.github.io/Gorod-Helper-WebTool__
 
